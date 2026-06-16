@@ -42,7 +42,7 @@ export const handleGoogleLoginCallback = asyncHandler(async (req, res) => {
   if (existingUser) {
     const jwtToken = generateJWTToken_username(existingUser);
     const expiryDate = new Date(Date.now() + 1 * 60 * 60 * 1000);
-    res.cookie("accessToken", jwtToken, { httpOnly: true, expires: expiryDate, secure: true, sameSite: "none"});
+    res.cookie("accessToken", jwtToken, { httpOnly: true, expires: expiryDate, secure: true, sameSite: "none" , domain: ".vercel.app"});
     return res.redirect(`${process.env.URL}/discover`);
   }
 
@@ -57,7 +57,7 @@ export const handleGoogleLoginCallback = asyncHandler(async (req, res) => {
   }
   const jwtToken = generateJWTToken_email(unregisteredUser);
   const expiryDate = new Date(Date.now() + 0.5 * 60 * 60 * 1000);
-  res.cookie("accessTokenRegistration", jwtToken, { httpOnly: true, expires: expiryDate, secure: true, sameSite: "none" });
+  res.cookie("accessTokenRegistration", jwtToken, { httpOnly: true, expires: expiryDate, secure: true, sameSite: "none" , domain: ".vercel.app" });
   return res.redirect(`${process.env.URL}/register`);
 });
           
@@ -91,7 +91,7 @@ export const AuthHandle = asyncHandler(async (req, res) => {
     const jwtToken = generateJWTToken_username(existingUser);
      return console.log(jwtToken);
     
-    res.cookie("accessToken", jwtToken, { httpOnly: true, secure: true, sameSite: "none" });
+    res.cookie("accessToken", jwtToken, { httpOnly: true, secure: true, sameSite: "none", domain: ".vercel.app" });
     
     return res.status(200).json(new ApiResponse(200, { user: existingUser }, "Login successful"));
    
@@ -107,7 +107,7 @@ export const AuthHandle = asyncHandler(async (req, res) => {
   });
 
   const jwtToken = generateJWTToken_email(unregisteredUser);
-  res.cookie("accessTokenRegistration", jwtToken, { httpOnly: true, secure: true, sameSite: "none" });
+  res.cookie("accessTokenRegistration", jwtToken, { httpOnly: true, secure: true, sameSite: "none", domain: ".vercel.app" });
   // Redirect client ko batayega ki ab register form fill karna hai
   return res.status(201).json(new ApiResponse(201, { redirect: "/register" }, "New user, please complete registration"));
 });
